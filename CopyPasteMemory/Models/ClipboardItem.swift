@@ -19,13 +19,20 @@ enum ClipboardContent: Equatable {
     // dos elementos sin tener que comparar el texto/imagen completo cada vez,
     // y para detectar duplicados (ver ClipboardHistoryStore.add).
     var hashDigest: String {
-        let bytes: Data
+        // Empezamos siempre por un "prefijo" que identifica el tipo de caso
+        // (texto o imagen) antes de añadir los bytes de verdad. Sin esto, un
+        // texto y una imagen que tuvieran EXACTAMENTE los mismos bytes en
+        // crudo generarían el mismo hash, aunque sean cosas distintas — un
+        // test lo detectó (textAndImageWithEquivalentBytesStillDiffer).
+        var bytes: Data
         switch self {
         case .text(let string):
+            bytes = Data("text:".utf8)
             // Convertimos el String a Data (sus bytes en UTF-8) para poder hashearlo
-            bytes = Data(string.utf8)
+            bytes.append(Data(string.utf8))
         case .image(let data):
-            bytes = data
+            bytes = Data("image:".utf8)
+            bytes.append(data)
         }
         // SHA256 genera 32 bytes; los convertimos a texto hexadecimal (ej. "a3f9c1...")
         return SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined()

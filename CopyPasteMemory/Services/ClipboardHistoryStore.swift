@@ -9,7 +9,8 @@ import Combine
 // Los motivos por los que un pin puede rechazarse. LocalizedError nos deja
 // definir un mensaje legible en errorDescription, que la UI puede mostrar
 // directamente en una alerta sin tener que traducir el error a mano.
-enum PinError: LocalizedError, Identifiable {
+// Equatable: nos deja comparar errores con == en los tests (ej. #expect(store.pinError == .tooLarge))
+enum PinError: LocalizedError, Identifiable, Equatable {
     case tooLarge
     case storageFailed
 
