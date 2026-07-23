@@ -6,22 +6,51 @@
 import SwiftUI
 import AppKit
 
-// Una sola fila de la lista del historial: icono/miniatura + texto + fecha.
+// Una sola fila de la lista del historial: icono/miniatura + texto + fecha,
+// más el botón de pin a la derecha.
 struct HistoryRowView: View {
     let item: ClipboardItem
     let isSelected: Bool // si es la fila resaltada por teclado/ratón ahora mismo
 
+    // Closures que nos pasa HistoryPanelView: qué hacer al pulsar la fila
+    // (restaurar y cerrar) y qué hacer al pulsar el pin (pinear/despinear).
+    // No los llamamos directamente aquí porque HistoryRowView no conoce el
+    // store — solo sabe "avisar hacia arriba" de lo que ha pasado.
+    let onSelect: () -> Void
+    let onTogglePin: () -> Void
+
     var body: some View {
-        HStack(spacing: 10) {
-            icon
-            VStack(alignment: .leading, spacing: 2) {
-                preview
-                // style: .relative muestra "hace 2 minutos" en vez de la fecha exacta
-                Text(item.timestamp, style: .relative)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+        HStack(spacing: 8) {
+            // Todo el contenido principal de la fila (icono + texto + fecha)
+            // va dentro de un Button propio, para que sea "clicable" sin
+            // interferir con el botón del pin de al lado (si usáramos
+            // .onTapGesture en todo el HStack, se comería también los
+            // toques sobre el botón del pin).
+            Button(action: onSelect) {
+                HStack(spacing: 10) {
+                    icon
+                    VStack(alignment: .leading, spacing: 2) {
+                        preview
+                        // style: .relative muestra "hace 2 minutos" en vez de la fecha exacta
+                        Text(item.timestamp, style: .relative)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer(minLength: 0) // empuja todo hacia la izquierda
+                }
             }
-            Spacer(minLength: 0) // empuja todo hacia la izquierda
+            // .plain quita el aspecto por defecto de botón (fondo, borde...),
+            // para que siga pareciendo una fila normal de lista
+            .buttonStyle(.plain)
+
+            Button(action: onTogglePin) {
+                // pin.fill si está pineado, pin (contorno) si no
+                Image(systemName: item.isPinned ? "pin.fill" : "pin")
+                    .foregroundStyle(item.isPinned ? Color.accentColor : .secondary)
+            }
+            .buttonStyle(.plain)
+            // Texto que aparece al dejar el ratón un momento encima (tooltip)
+            .help(item.isPinned ? "Quitar pin" : "Pinear (sobrevive a un reinicio del Mac)")
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)

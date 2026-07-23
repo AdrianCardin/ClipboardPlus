@@ -9,9 +9,9 @@ import SwiftUI
 // Dibuja la lista del historial y gestiona la navegación con teclado.
 struct HistoryPanelView: View {
     // @ObservedObject: esta vista "observa" el store, así que cada vez que
-    // `items` cambie (nueva copia, borrado, etc.) la vista se redibuja sola.
-    // No usamos @StateObject porque no somos dueños del store — lo crea y
-    // mantiene vivo AppDelegate, aquí solo lo tomamos prestado.
+    // `items` cambie (nueva copia, borrado, pin/despin...) la vista se
+    // redibuja sola. No usamos @StateObject porque no somos dueños del
+    // store — lo crea y mantiene vivo AppDelegate, aquí solo lo tomamos prestado.
     @ObservedObject var store: ClipboardHistoryStore
 
     // Closure que llamamos para pedirle al controller que cierre el panel
@@ -21,6 +21,9 @@ struct HistoryPanelView: View {
     // @State: variable propia de esta vista, para recordar qué fila está
     // resaltada mientras navegas con las flechas del teclado
     @State private var selectedID: ClipboardItem.ID?
+
+    private var unpinnedCount: Int { store.items.filter { !$0.isPinned }.count }
+    private var pinnedCount: Int { store.items.count - unpinnedCount }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -56,6 +59,16 @@ struct HistoryPanelView: View {
             moveSelection(by: 1)
             return .handled
         }
+        // .alert(item:) se muestra automáticamente cuando store.pinError deja
+        // de ser nil, y SwiftUI se encarga de volver a ponerlo a nil solo
+        // cuando el usuario cierra la alerta (pulsando "Vale").
+        .alert(item: $store.pinError) { error in
+            Alert(
+                title: Text("No se puede pinear"),
+                message: Text(error.errorDescription ?? ""),
+                dismissButton: .default(Text("Vale"))
+            )
+        }
     }
 
     private var header: some View {
@@ -63,7 +76,7 @@ struct HistoryPanelView: View {
             Text("Historial de portapapeles")
                 .font(.headline)
             Spacer()
-            Text("\(store.items.count)/25")
+            Text(pinnedCount > 0 ? "\(unpinnedCount)/25 · \(pinnedCount) 📌" : "\(unpinnedCount)/25")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -93,12 +106,13 @@ struct HistoryPanelView: View {
                 // más eficiente que VStack si la lista fuera larga
                 LazyVStack(spacing: 2) {
                     ForEach(store.items) { item in
-                        HistoryRowView(item: item, isSelected: item.id == selectedID)
-                            .id(item.id) // necesario para que scrollTo sepa a qué fila ir
-                            .contentShape(Rectangle()) // hace que toda la fila sea "clicable", no solo el texto
-                            .onTapGesture {
-                                select(item)
-                            }
+                        HistoryRowView(
+                            item: item,
+                            isSelected: item.id == selectedID,
+                            onSelect: { select(item) },
+                            onTogglePin: { store.togglePin(item) }
+                        )
+                        .id(item.id) // necesario para que scrollTo sepa a qué fila ir
                     }
                 }
                 .padding(6)

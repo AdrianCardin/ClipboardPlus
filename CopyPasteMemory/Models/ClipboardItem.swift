@@ -41,13 +41,30 @@ struct ClipboardItem: Identifiable, Equatable {
     let timestamp: Date
     let contentHash: String
 
-    // Inicializador: al crear un ClipboardItem, generamos automáticamente
-    // un id único (UUID), tomamos la fecha actual si no se indica otra,
-    // y calculamos el hash una sola vez (no en cada comparación).
+    // `var` (no `let`): a diferencia de los demás campos, esto SÍ puede
+    // cambiar después de crear el item (al pinear/despinear desde el panel).
+    var isPinned: Bool
+
+    // Inicializador "normal": se usa cuando algo se acaba de copiar. Genera
+    // automáticamente un id único (UUID), toma la fecha actual, y calcula
+    // el hash una sola vez (no en cada comparación). Nace siempre sin pinear.
     init(content: ClipboardContent, timestamp: Date = Date()) {
         self.id = UUID()
         self.content = content
         self.timestamp = timestamp
         self.contentHash = content.hashDigest
+        self.isPinned = false
+    }
+
+    // Segundo inicializador: se usa SOLO al reconstruir un item pineado que
+    // venía guardado en disco/Keychain (ver PinnedItemStore.loadAll()). Aquí
+    // SÍ recibimos el id y la fecha desde fuera, para conservar los
+    // originales en vez de generar unos nuevos cada vez que arranca la app.
+    init(id: UUID, content: ClipboardContent, timestamp: Date, isPinned: Bool) {
+        self.id = id
+        self.content = content
+        self.timestamp = timestamp
+        self.contentHash = content.hashDigest
+        self.isPinned = isPinned
     }
 }
