@@ -1,0 +1,30 @@
+name: Tests
+
+# Se ejecuta solo (sin que tengas que acordarte) cada vez que subes cambios
+# a main, y también en cada Pull Request antes de fusionarlo.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: macos-15
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      # CODE_SIGNING_ALLOWED=NO / REQUIRED=NO: el runner de GitHub no tiene
+      # tu certificado de Apple ni el de nadie, así que desactivamos la
+      # firma solo para este job — no hace falta firmar nada para ejecutar
+      # los tests, solo para distribuir la app de verdad.
+      - name: Ejecutar tests
+        run: |
+          xcodebuild test \
+            -project CopyPasteMemory.xcodeproj \
+            -scheme CopyPasteMemory \
+            -destination 'platform=macOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO
