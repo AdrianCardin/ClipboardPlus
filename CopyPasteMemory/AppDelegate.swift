@@ -15,6 +15,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // antes incluso de que termine de lanzarse la app — así CopyPasteMemoryApp
     // ya puede pasárselo a MenuBarView sin esperar a nada.
     let historyStore = ClipboardHistoryStore()
+    let launchAtLoginManager = LaunchAtLoginManager()
 
     private let monitor = ClipboardMonitor()
     private let hotKeyManager = HotKeyManager()

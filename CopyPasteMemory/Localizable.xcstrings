@@ -1,6 +1,41 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "Abrir al iniciar sesión" : {
+      "comment" : "Toggle del menú para que la app arranque sola al iniciar el Mac",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei der Anmeldung öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open at Login"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir al iniciar sesión"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir à la connexion"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri all'accesso"
+          }
+        }
+      }
+    },
     "%lld/25" : {
       "comment" : "Contador del historial: número de elementos sin pinear / máximo 25",
       "localizations" : {

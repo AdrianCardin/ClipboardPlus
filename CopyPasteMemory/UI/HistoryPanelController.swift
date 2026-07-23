@@ -34,8 +34,6 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
     }
 
     func show() {
-        print("🟢 HistoryPanelController.show() llamado")
-
         // Reafirmamos que nuestra app es "la activa" justo antes de mostrar
         // el panel. Esto es clave cuando se abre desde el menú de la barra
         // de estado: al cerrarse ese menú, macOS le devuelve la actividad a
@@ -52,8 +50,6 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
         panel.orderFrontRegardless()
         // makeKey: dale el foco de teclado, para que las flechas/Enter funcionen
         panel.makeKey()
-
-        print("🟢 tras mostrar -> isVisible=\(panel.isVisible) isKeyWindow=\(panel.isKeyWindow) frame=\(panel.frame)")
     }
 
     func hide() {
@@ -103,7 +99,6 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
             object: newPanel,
             queue: .main
         ) { [weak self] _ in
-            print("🔴 el panel ha perdido el foco (didResignKeyNotification) -> se oculta")
             self?.hide()
         }
 

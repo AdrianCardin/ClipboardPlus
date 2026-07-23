@@ -26,7 +26,11 @@ struct CopyPasteMemoryApp: App {
             // el menú pueda mostrar cuántos items hay y vaciarlo si se pide,
             // y la propia función showHistoryPanel (sin paréntesis: así se
             // pasa como una referencia a la función, no se llama todavía).
-            MenuBarView(store: appDelegate.historyStore, onShowHistory: appDelegate.showHistoryPanel)
+            MenuBarView(
+                store: appDelegate.historyStore,
+                launchAtLoginManager: appDelegate.launchAtLoginManager,
+                onShowHistory: appDelegate.showHistoryPanel
+            )
         }
     }
 }
