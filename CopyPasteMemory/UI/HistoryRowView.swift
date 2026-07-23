@@ -49,8 +49,11 @@ struct HistoryRowView: View {
                     .foregroundStyle(item.isPinned ? Color.accentColor : .secondary)
             }
             .buttonStyle(.plain)
-            // Texto que aparece al dejar el ratón un momento encima (tooltip)
-            .help(item.isPinned ? "Quitar pin" : "Pinear (sobrevive a un reinicio del Mac)")
+            // Texto que aparece al dejar el ratón un momento encima (tooltip).
+            // Envolvemos cada opción en Text(...) — si dejáramos que el
+            // ternario devolviera un String normal, SwiftUI lo mostraría tal
+            // cual sin buscar traducción; envuelto en Text sí es localizable.
+            .help(item.isPinned ? Text("Quitar pin") : Text("Pinear (sobrevive a un reinicio del Mac)"))
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)

@@ -76,9 +76,22 @@ struct HistoryPanelView: View {
             Text("Historial de portapapeles")
                 .font(.headline)
             Spacer()
-            Text(pinnedCount > 0 ? "\(unpinnedCount)/25 · \(pinnedCount) 📌" : "\(unpinnedCount)/25")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            // Importante para la localización: si esto se escribiera como un
+            // String normal (ej. una variable calculada con un ternario) y
+            // LUEGO se pasara a Text(...), SwiftUI lo mostraría "tal cual",
+            // sin buscar traducción. Escribiéndolo como interpolación
+            // DIRECTA dentro de cada Text("...") sí queda marcado como
+            // localizable, con "%lld" como hueco para el número — así cada
+            // idioma puede tener su propio orden/formato si hiciera falta.
+            if pinnedCount > 0 {
+                Text("\(unpinnedCount)/25 · \(pinnedCount) 📌")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                Text("\(unpinnedCount)/25")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
         .padding(12)
     }

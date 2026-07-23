@@ -23,8 +23,10 @@ struct CopyPasteMemoryApp: App {
     var body: some Scene {
         MenuBarExtra("CopyPasteMemory", systemImage: "doc.on.clipboard") {
             // Le pasamos el historial (creado dentro de appDelegate) para que
-            // el menú pueda mostrar cuántos items hay y vaciarlo si se pide.
-            MenuBarView(store: appDelegate.historyStore)
+            // el menú pueda mostrar cuántos items hay y vaciarlo si se pide,
+            // y la propia función showHistoryPanel (sin paréntesis: así se
+            // pasa como una referencia a la función, no se llama todavía).
+            MenuBarView(store: appDelegate.historyStore, onShowHistory: appDelegate.showHistoryPanel)
         }
     }
 }

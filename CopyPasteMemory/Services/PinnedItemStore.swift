@@ -53,14 +53,30 @@ final class PinnedItemStore {
 
     // MARK: - Guardar / borrar un pin
 
-    func save(_ item: ClipboardItem) {
+    // Devuelve `true` solo si de verdad se guardó. Antes esta función no
+    // devolvía nada y usaba `try?` para ignorar cualquier fallo — eso
+    // significaba que si el Llavero o la escritura del archivo fallaban por
+    // el motivo que fuera (permiso denegado, disco lleno, Llavero
+    // bloqueado...), la app se quedaba pensando que el pin se había guardado
+    // bien, sin avisar a nadie. Ahora comprobamos el resultado real y solo
+    // anotamos el item en el manifiesto si el contenido se guardó de verdad.
+    @discardableResult
+    func save(_ item: ClipboardItem) -> Bool {
+        let succeeded: Bool
         switch item.content {
         case .text(let string):
-            saveTextToKeychain(id: item.id, text: string)
+            succeeded = saveTextToKeychain(id: item.id, text: string)
         case .image(let data):
-            try? data.write(to: imageFileURL(for: item.id))
+            succeeded = saveImageToFile(id: item.id, data: data)
         }
+
+        // Si el contenido no se guardó, no tiene sentido anotarlo en el
+        // manifiesto como si fuera un pin válido — quedaría una entrada
+        // "fantasma" que loadAll() nunca podría reconstruir.
+        guard succeeded else { return false }
+
         addToManifest(item)
+        return true
     }
 
     func remove(id: UUID) {
@@ -131,7 +147,9 @@ final class PinnedItemStore {
     // Keychain no es de Swift moderno, es una API de C muy antigua (Security
     // framework): se trabaja con diccionarios "query" describiendo qué
     // queremos hacer, en vez de llamar a métodos normales de un objeto.
-    private func saveTextToKeychain(id: UUID, text: String) {
+    // Devuelve si realmente se guardó (comprobando el código de estado que
+    // devuelve SecItemAdd, en vez de darlo por hecho).
+    private func saveTextToKeychain(id: UUID, text: String) -> Bool {
         let data = Data(text.utf8)
 
         let query: [String: Any] = [
@@ -144,6 +162,8 @@ final class PinnedItemStore {
 
         // Si ya existía una entrada con este id, la borramos primero.
         // Es más simple que usar SecItemUpdate para este caso de uso.
+        // (No comprobamos su resultado: si no existía nada que borrar, este
+        // paso "falla" de forma esperada y no es un problema real.)
         SecItemDelete(query as CFDictionary)
 
         var newItem = query
@@ -153,7 +173,24 @@ final class PinnedItemStore {
         // no queremos que este texto viaje a otros dispositivos sin que el
         // usuario lo haya pedido explícitamente.
         newItem[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
-        SecItemAdd(newItem as CFDictionary, nil)
+
+        // SecItemAdd devuelve un "OSStatus": errSecSuccess (0) si fue bien,
+        // o un código de error distinto si algo falló (ej. el usuario denegó
+        // el permiso del Llavero, o el propio Llavero está bloqueado/corrupto).
+        let status = SecItemAdd(newItem as CFDictionary, nil)
+        return status == errSecSuccess
+    }
+
+    // Igual que saveTextToKeychain pero para el archivo de imagen: usamos
+    // try/catch en vez de `try?` para poder distinguir "se guardó bien" de
+    // "falló por lo que sea" (disco lleno, sin permisos de escritura...).
+    private func saveImageToFile(id: UUID, data: Data) -> Bool {
+        do {
+            try data.write(to: imageFileURL(for: id))
+            return true
+        } catch {
+            return false
+        }
     }
 
     private func readTextFromKeychain(id: UUID) -> String? {

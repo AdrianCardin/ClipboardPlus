@@ -11,11 +11,29 @@ import Combine
 // directamente en una alerta sin tener que traducir el error a mano.
 enum PinError: LocalizedError, Identifiable {
     case tooLarge
+    case storageFailed
 
-    var id: String { "tooLarge" } // para poder usarlo con .alert(item:) en SwiftUI
+    // Identifiable necesita un id distinto por caso, para que SwiftUI sepa
+    // si la alerta que se está mostrando es "la misma" o ha cambiado.
+    var id: String {
+        switch self {
+        case .tooLarge: return "tooLarge"
+        case .storageFailed: return "storageFailed"
+        }
+    }
 
     var errorDescription: String? {
-        "Este elemento es demasiado grande para guardarlo de forma permanente (máx. 100 KB de texto o 5 MB de imagen)."
+        // String(localized:) es el equivalente, fuera de vistas SwiftUI, a
+        // pasarle un texto literal a Text(...): busca ese texto en el
+        // catálogo de idiomas (Localizable.xcstrings) y devuelve la
+        // traducción del idioma del sistema si existe, o el propio texto
+        // en español si no hay ninguna coincidencia.
+        switch self {
+        case .tooLarge:
+            return String(localized: "Este elemento es demasiado grande para guardarlo de forma permanente (máx. 100 KB de texto o 5 MB de imagen).")
+        case .storageFailed:
+            return String(localized: "No se ha podido guardar este elemento de forma permanente (fallo del Llavero o del almacenamiento del sistema). Inténtalo de nuevo.")
+        }
     }
 }
 
@@ -129,8 +147,16 @@ final class ClipboardHistoryStore: ObservableObject {
             return
         }
 
+        // Solo marcamos el item como pineado en la interfaz SI el guardado
+        // real (Llavero o archivo) ha funcionado. Antes se marcaba como
+        // pineado siempre, aunque el guardado fallara por detrás — ahora,
+        // si falla, avisamos con una alerta y el item se queda sin pinear.
+        guard pinnedStore.save(items[index]) else {
+            pinError = .storageFailed
+            return
+        }
+
         items[index].isPinned = true
-        pinnedStore.save(items[index])
     }
 
     private static func fitsWithinPinLimits(_ content: ClipboardContent) -> Bool {

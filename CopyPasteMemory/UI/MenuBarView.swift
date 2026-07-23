@@ -14,25 +14,15 @@ struct MenuBarView: View {
     // sí necesita saber si hay items o no (para activar/desactivar "Vaciar")
     @ObservedObject var store: ClipboardHistoryStore
 
+    // En vez de buscar el AppDelegate nosotros mismos (con NSApp.delegate as?
+    // AppDelegate, que fallaba en silencio al pulsar desde este menú), quien
+    // crea esta vista (CopyPasteMemoryApp) nos pasa directamente la función a
+    // llamar. Así no dependemos de "encontrar" nada en tiempo de ejecución.
+    let onShowHistory: () -> Void
+
     var body: some View {
         Button("Mostrar historial (⌘⌥V)") {
-            // DispatchQueue.main.async: en vez de mostrar el panel AHORA
-            // MISMO (mientras el menú de la barra de estado todavía se está
-            // cerrando), lo aplazamos a "la próxima vez que el sistema esté
-            // libre" — un instante después, pero suficiente para que el
-            // cierre del menú termine antes de que aparezca el panel.
-            //
-            // Sin esto, el panel se abre y macOS le devuelve el foco a la
-            // app anterior casi a la vez (por el cierre del menú), y como el
-            // panel se auto-oculta al perder el foco (ver
-            // didResignKeyNotification en HistoryPanelController), se abre
-            // y se cierra solo, tan rápido que parece que "no ha hecho nada".
-            DispatchQueue.main.async {
-                // NSApp.delegate es "el AppDelegate de la app en marcha". Lo
-                // convertimos (as?) a nuestro tipo concreto para poder llamar
-                // a showHistoryPanel(), que es un método nuestro, no de AppKit.
-                (NSApp.delegate as? AppDelegate)?.showHistoryPanel()
-            }
+            onShowHistory()
         }
 
         Divider() // línea separadora entre grupos de opciones

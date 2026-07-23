@@ -86,10 +86,14 @@
 				};
 			};
 			buildConfigurationList = 2D99ABCC3012A1A2000A55BF /* Build configuration list for PBXProject "CopyPasteMemory" */;
-			developmentRegion = en;
+			developmentRegion = es;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				es,
 				en,
+				de,
+				fr,
+				it,
 				Base,
 			);
 			mainGroup = 2D99ABC83012A1A2000A55BF;
