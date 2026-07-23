@@ -28,7 +28,7 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
 ### Requirements
 
 - macOS with Xcode 16 or newer installed (the project uses Xcode's modern file-system-synchronized groups and String Catalogs).
-- A free Apple ID is enough to build and run it locally — **no paid Apple Developer Program membership needed**. The only downside of the free tier is that a build stops working after 7 days and needs to be rebuilt from Xcode (just press ⌘R again).
+- A free Apple ID is enough to build and run it locally — **no paid Apple Developer Program membership needed**. The only downside of the free tier is that a build stops working after 7 days and needs to be rebuilt from Xcode (just press ⌘R again, or automate it locally with a script + `launchd` job that rebuilds and relaunches it every few days).
 
 ### Build & run
 
@@ -57,6 +57,10 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
 - Pinned **text** goes to the macOS Keychain, marked "this device only" (never synced via iCloud Keychain).
 - Pinned **images** are saved as local files inside the app's private sandbox container — nowhere else on disk.
 - Content marked as "concealed"/"transient" by other apps (the convention used by password managers) is never recorded.
+
+### Roadmap
+
+- **Permanent signing.** Right now the app is signed with a free Apple ID, so a local build stops working after 7 days (a local `launchd` job can rebuild it automatically in the meantime). Getting a paid Apple Developer Program membership is planned for later — that would allow a properly signed, notarized `.app` release that anyone could just download and run, no Xcode or Apple ID needed.
 
 ### License
 
@@ -115,6 +119,10 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
 - El **texto** pineado va al Llavero de macOS, marcado "solo este dispositivo" (nunca se sincroniza por iCloud Keychain).
 - Las **imágenes** pineadas se guardan como archivos locales dentro de la carpeta privada de la app — en ningún otro sitio del disco.
 - El contenido marcado como "oculto"/"transitorio" por otras apps (la convención que usan los gestores de contraseñas) nunca se registra.
+
+### Próximos pasos
+
+- **Firma permanente.** Ahora mismo la app está firmada con un Apple ID gratuito, así que un build local deja de funcionar a los 7 días (mientras tanto, un job de `launchd` local puede recompilarla sola). Está pendiente pasar a la cuenta de pago de Apple Developer Program más adelante — eso permitiría publicar un `.app` firmado y notarizado que cualquiera pudiera simplemente descargar y abrir, sin necesitar Xcode ni Apple ID propio.
 
 ### Licencia
 
