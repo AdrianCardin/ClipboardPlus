@@ -6,28 +6,44 @@
 import Foundation
 import CryptoKit
 
+// Un elemento copiado puede ser texto o imagen. Un "enum con valor asociado"
+// es como un "case" que además lleva sus propios datos pegados:
+// - .text lleva un String
+// - .image lleva un Data (los bytes en crudo de la imagen, en formato PNG)
 enum ClipboardContent: Equatable {
     case text(String)
     case image(Data)
 
+    // Calcula un "hash" (huella digital) del contenido: una cadena corta que
+    // identifica de forma (casi) única esos bytes. Nos sirve para comparar
+    // dos elementos sin tener que comparar el texto/imagen completo cada vez,
+    // y para detectar duplicados (ver ClipboardHistoryStore.add).
     var hashDigest: String {
         let bytes: Data
         switch self {
         case .text(let string):
+            // Convertimos el String a Data (sus bytes en UTF-8) para poder hashearlo
             bytes = Data(string.utf8)
         case .image(let data):
             bytes = data
         }
+        // SHA256 genera 32 bytes; los convertimos a texto hexadecimal (ej. "a3f9c1...")
         return SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined()
     }
 }
 
+// Representa una entrada del historial: el contenido en sí, más metadatos.
+// Identifiable es un protocolo de SwiftUI: con un campo `id`, las listas
+// (ForEach, List) saben distinguir cada fila sin que se lo digamos explícitamente.
 struct ClipboardItem: Identifiable, Equatable {
     let id: UUID
     let content: ClipboardContent
     let timestamp: Date
     let contentHash: String
 
+    // Inicializador: al crear un ClipboardItem, generamos automáticamente
+    // un id único (UUID), tomamos la fecha actual si no se indica otra,
+    // y calculamos el hash una sola vez (no en cada comparación).
     init(content: ClipboardContent, timestamp: Date = Date()) {
         self.id = UUID()
         self.content = content

@@ -6,12 +6,16 @@
 import AppKit
 import SwiftUI
 
-/// Owns a single reusable floating NSPanel that shows the clipboard history.
-/// A plain SwiftUI Window/MenuBarExtra popover can't reliably appear above
-/// every app regardless of focus (e.g. while another app owns a fullscreen
-/// Space), so this uses a purpose-built panel instead.
+// Se encarga de crear y mostrar/ocultar UNA única ventana flotante (NSPanel)
+// que contiene el historial. No usamos una ventana SwiftUI normal porque
+// necesitamos que aparezca por encima de CUALQUIER app, incluso si esa app
+// está a pantalla completa o en otro "Space" (escritorio virtual) — eso solo
+// se consigue con configuración específica de AppKit (ver panelInstance()).
 final class HistoryPanelController: NSObject, NSWindowDelegate {
     private let store: ClipboardHistoryStore
+
+    // Empieza en nil: el panel no se crea hasta la primera vez que hace falta
+    // (así arrancamos la app más rápido y no gastamos memoria si nunca se abre).
     private var panel: NSPanel?
     private var resignObserver: NSObjectProtocol?
 
@@ -19,6 +23,8 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
         self.store = store
     }
 
+    // La llama HotKeyManager cada vez que se pulsa Cmd+Option+V:
+    // si está visible lo oculta, si no, lo muestra.
     func toggle() {
         if let panel, panel.isVisible {
             hide()
@@ -30,31 +36,44 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
     func show() {
         let panel = panelInstance()
         positionNearCursor(panel)
+        // orderFrontRegardless: tráelo al frente aunque nuestra app no sea la activa
         panel.orderFrontRegardless()
+        // makeKey: dale el foco de teclado, para que las flechas/Enter funcionen
         panel.makeKey()
     }
 
     func hide() {
-        panel?.orderOut(nil)
+        panel?.orderOut(nil) // "sácalo de la pantalla" (no lo destruye, lo reutilizamos)
     }
 
+    // Crea el panel la primera vez que se necesita; las siguientes veces
+    // devuelve el mismo que ya existía.
     private func panelInstance() -> NSPanel {
         if let panel { return panel }
 
+        // NSHostingView es el "puente" que permite meter una vista de SwiftUI
+        // (HistoryPanelView) dentro de una ventana de AppKit (NSPanel).
         let hostingView = NSHostingView(
             rootView: HistoryPanelView(store: store, onDismiss: { [weak self] in
                 self?.hide()
             })
         )
 
+        // KeyablePanel es nuestra propia subclase (definida abajo del todo)
         let newPanel = KeyablePanel(
             contentRect: NSRect(x: 0, y: 0, width: 360, height: 420),
+            // .nonactivatingPanel: al mostrarse, NO le quita el foco general
+            // a la app en la que estabas trabajando (por eso hace falta el
+            // truco de canBecomeKey más abajo, si no, no podrías ni navegar
+            // con las flechas dentro del panel)
             styleMask: [.nonactivatingPanel, .titled, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
         newPanel.isFloatingPanel = true
-        newPanel.level = .floating
+        newPanel.level = .floating // por encima de ventanas normales
+        // Que aparezca en todos los "Spaces" (escritorios virtuales) y también
+        // sobre apps a pantalla completa
         newPanel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         newPanel.titleVisibility = .hidden
         newPanel.titlebarAppearsTransparent = true
@@ -63,6 +82,8 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
         newPanel.contentView = hostingView
         newPanel.delegate = self
 
+        // Nos suscribimos a "esta ventana ha perdido el foco" para poder
+        // cerrarla automáticamente si el usuario hace clic fuera de ella
         resignObserver = NotificationCenter.default.addObserver(
             forName: NSWindow.didResignKeyNotification,
             object: newPanel,
@@ -75,8 +96,11 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
         return newPanel
     }
 
+    // Coloca el panel cerca de donde está el cursor del ratón en ese momento,
+    // asegurándose de que no se salga de los límites de la pantalla.
     private func positionNearCursor(_ panel: NSPanel) {
         let mouseLocation = NSEvent.mouseLocation
+        // Buscamos en qué pantalla está el cursor (por si hay varios monitores)
         let screen = NSScreen.screens.first { NSMouseInRect(mouseLocation, $0.frame, false) } ?? NSScreen.main
         guard let screen else { return }
 
@@ -85,6 +109,7 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
             y: mouseLocation.y - panel.frame.height - 12
         )
 
+        // "Empujamos" el origen para que el panel no quede cortado por el borde
         let screenFrame = screen.visibleFrame
         origin.x = min(max(origin.x, screenFrame.minX), screenFrame.maxX - panel.frame.width)
         origin.y = min(max(origin.y, screenFrame.minY), screenFrame.maxY - panel.frame.height)
@@ -93,10 +118,10 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
     }
 }
 
-/// A .nonactivatingPanel normally can't become key, which would block keyboard
-/// navigation (arrows/Enter/Escape). Overriding this lets it accept keyboard
-/// input without stealing frontmost-application status from the app the user
-/// was just in.
+// Un .nonactivatingPanel normalmente NUNCA puede convertirse en la ventana
+// "key" (la que recibe el teclado). Sobreescribiendo canBecomeKey a `true`
+// lo forzamos a aceptar teclado igualmente, sin perder la ventaja de no
+// robarle el foco general a la app en la que estabas.
 private final class KeyablePanel: NSPanel {
     override var canBecomeKey: Bool { true }
 }
