@@ -44,6 +44,17 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
    - Create a LaunchAgent (e.g. `~/Library/LaunchAgents/com.yourname.copypastememory.resign.plist`) pointing to `Scripts/resign-and-relaunch.sh` inside your local clone, running on a `StartInterval` of a few days. The script itself uses `$HOME`, so it works as-is — only the `.plist` needs your own absolute path, since `launchd` doesn't support `$HOME` there.
    - Load it with `launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.yourname.copypastememory.resign.plist`.
 
+### Updating
+
+There's no auto-update yet — since you built it from source, updating means pulling the latest code and rebuilding:
+
+```bash
+cd CopyPasteMemory
+git pull
+```
+
+Then reopen the project in Xcode (or let it reload automatically if it was already open) and press **⌘R** again.
+
 ### Usage
 
 | Action | Result |
@@ -108,6 +119,17 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
 6. *(Opcional pero recomendado)* Configura el refirmado automático para no toparte nunca con la caducidad de 7 días:
    - Crea un LaunchAgent (ej. `~/Library/LaunchAgents/com.tunombre.copypastememory.resign.plist`) que apunte a `Scripts/resign-and-relaunch.sh` dentro de tu copia local, con un `StartInterval` de pocos días. El script ya usa `$HOME`, así que funciona tal cual — solo el `.plist` necesita tu propia ruta absoluta, porque `launchd` no admite `$HOME` ahí.
    - Cárgalo con `launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.tunombre.copypastememory.resign.plist`.
+
+### Actualizar
+
+Todavía no hay actualización automática — como lo compilaste desde el código fuente, actualizar significa traer los cambios nuevos y volver a compilar:
+
+```bash
+cd CopyPasteMemory
+git pull
+```
+
+Luego vuelve a abrir el proyecto en Xcode (o deja que se recargue solo si ya lo tenías abierto) y pulsa **⌘R** otra vez.
 
 ### Uso
 
