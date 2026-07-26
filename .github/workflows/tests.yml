@@ -24,7 +24,7 @@ jobs:
         run: |
           xcodebuild test \
             -project CopyPasteMemory.xcodeproj \
-            -scheme CopyPasteMemory \
+            -scheme ClipboardPlus \
             -destination 'platform=macOS' \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO

@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D99ABD03012A1A2000A55BF"
-               BuildableName = "CopyPasteMemory.app"
-               BlueprintName = "CopyPasteMemory"
+               BuildableName = "ClipboardPlus.app"
+               BlueprintName = "ClipboardPlus"
                ReferencedContainer = "container:CopyPasteMemory.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -70,8 +70,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D99ABD03012A1A2000A55BF"
-            BuildableName = "CopyPasteMemory.app"
-            BlueprintName = "CopyPasteMemory"
+            BuildableName = "ClipboardPlus.app"
+            BlueprintName = "ClipboardPlus"
             ReferencedContainer = "container:CopyPasteMemory.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -91,8 +91,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D99ABD03012A1A2000A55BF"
-            BuildableName = "CopyPasteMemory.app"
-            BlueprintName = "CopyPasteMemory"
+            BuildableName = "ClipboardPlus.app"
+            BlueprintName = "ClipboardPlus"
             ReferencedContainer = "container:CopyPasteMemory.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

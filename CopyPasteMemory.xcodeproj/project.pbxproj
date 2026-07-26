@@ -17,7 +17,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2D99ABD13012A1A2000A55BF /* CopyPasteMemory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyPasteMemory.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D99ABD13012A1A2000A55BF /* ClipboardPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClipboardPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D99AC413012CE8D000A55BF /* CopyPasteMemoryUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPasteMemoryUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -64,7 +64,7 @@
 		2D99ABD23012A1A2000A55BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2D99ABD13012A1A2000A55BF /* CopyPasteMemory.app */,
+				2D99ABD13012A1A2000A55BF /* ClipboardPlus.app */,
 				2D99AC413012CE8D000A55BF /* CopyPasteMemoryUnitTests.xctest */,
 			);
 			name = Products;
@@ -73,9 +73,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2D99ABD03012A1A2000A55BF /* CopyPasteMemory */ = {
+		2D99ABD03012A1A2000A55BF /* ClipboardPlus */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D99ABDE3012A1A2000A55BF /* Build configuration list for PBXNativeTarget "CopyPasteMemory" */;
+			buildConfigurationList = 2D99ABDE3012A1A2000A55BF /* Build configuration list for PBXNativeTarget "ClipboardPlus" */;
 			buildPhases = (
 				2D99ABCD3012A1A2000A55BF /* Sources */,
 				2D99ABCE3012A1A2000A55BF /* Frameworks */,
@@ -88,11 +88,11 @@
 			fileSystemSynchronizedGroups = (
 				2D99ABD33012A1A2000A55BF /* CopyPasteMemory */,
 			);
-			name = CopyPasteMemory;
+			name = ClipboardPlus;
 			packageProductDependencies = (
 			);
 			productName = CopyPasteMemory;
-			productReference = 2D99ABD13012A1A2000A55BF /* CopyPasteMemory.app */;
+			productReference = 2D99ABD13012A1A2000A55BF /* ClipboardPlus.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D99AC403012CE8D000A55BF /* CopyPasteMemoryUnitTests */ = {
@@ -155,7 +155,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2D99ABD03012A1A2000A55BF /* CopyPasteMemory */,
+				2D99ABD03012A1A2000A55BF /* ClipboardPlus */,
 				2D99AC403012CE8D000A55BF /* CopyPasteMemoryUnitTests */,
 			);
 		};
@@ -198,7 +198,7 @@
 /* Begin PBXTargetDependency section */
 		2D99AC463012CE8D000A55BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D99ABD03012A1A2000A55BF /* CopyPasteMemory */;
+			target = 2D99ABD03012A1A2000A55BF /* ClipboardPlus */;
 			targetProxy = 2D99AC453012CE8D000A55BF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -444,7 +444,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D99ABDE3012A1A2000A55BF /* Build configuration list for PBXNativeTarget "CopyPasteMemory" */ = {
+		2D99ABDE3012A1A2000A55BF /* Build configuration list for PBXNativeTarget "ClipboardPlus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D99ABDF3012A1A2000A55BF /* Debug */,
