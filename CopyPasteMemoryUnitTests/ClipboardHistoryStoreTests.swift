@@ -19,10 +19,16 @@ import Testing
 // MainActor, así que ClipboardHistoryStore ya vive en el hilo principal;
 // aislamos los tests igual para poder llamarlo directamente sin fricciones
 // de concurrencia.
+@Suite("Clipboard History Store")
 @MainActor
 struct ClipboardHistoryStoreTests {
+    
+    // Constantes para evitar números mágicos
+    private let maxHistorySize = 25
+    private let maxPinSizeBytes = 100_000
 
-    @Test func addingANewItemPutsItFirst() {
+    @Test("Añadir un item nuevo lo pone primero en la lista")
+    func addingANewItemPutsItFirst() {
         let store = ClipboardHistoryStore()
         store.add(.text("primero"))
         store.add(.text("segundo"))
@@ -30,7 +36,8 @@ struct ClipboardHistoryStoreTests {
         #expect(store.items.first?.content == .text("segundo"))
     }
 
-    @Test func addingDuplicateContentMovesItToFrontInsteadOfDuplicating() {
+    @Test("Añadir contenido duplicado lo mueve al frente sin duplicar")
+    func addingDuplicateContentMovesItToFrontInsteadOfDuplicating() {
         let store = ClipboardHistoryStore()
         let countBefore = store.items.count
 
@@ -43,7 +50,8 @@ struct ClipboardHistoryStoreTests {
         #expect(store.items.first?.content == .text("dedupe-a"))
     }
 
-    @Test func historyIsCappedAt25UnpinnedItems() {
+    @Test("El historial mantiene máximo 25 items no pineados")
+    func historyIsCappedAt25UnpinnedItems() {
         let store = ClipboardHistoryStore()
         let pinnedAtStart = store.items.filter(\.isPinned).count
 
@@ -53,16 +61,17 @@ struct ClipboardHistoryStoreTests {
 
         // El límite de 25 aplica solo a los NO pineados; si ya hubiera algún
         // pin real de antes, se suma aparte.
-        #expect(store.items.count == 25 + pinnedAtStart)
+        #expect(store.items.count == maxHistorySize + pinnedAtStart)
         // Los 5 primeros (los más antiguos de esta tanda) deben haber caído fuera
         #expect(!store.items.contains { $0.content == .text("cap-test-0") })
         // El último añadido, en cambio, debe seguir ahí
         #expect(store.items.contains { $0.content == .text("cap-test-29") })
     }
 
-    @Test func togglePinRejectsTextOverTheSizeLimit() {
+    @Test("Toggle pin rechaza texto que excede el límite de tamaño")
+    func togglePinRejectsTextOverTheSizeLimit() {
         let store = ClipboardHistoryStore()
-        let hugeText = String(repeating: "a", count: 200_000) // > 100 KB
+        let hugeText = String(repeating: "a", count: maxPinSizeBytes + 50_000) // > 100 KB
         store.add(.text(hugeText))
 
         guard let item = store.items.first else {
@@ -76,7 +85,8 @@ struct ClipboardHistoryStoreTests {
         #expect(store.items.first?.isPinned == false)
     }
 
-    @Test func togglePinAcceptsAndPersistsASmallTextItem() {
+    @Test("Toggle pin acepta y persiste un item de texto pequeño")
+    func togglePinAcceptsAndPersistsASmallTextItem() {
         // Este test SÍ llega a escribir en el Llavero real (no hay mock),
         // así que despineamos al final para no dejar basura en tu Mac.
         let store = ClipboardHistoryStore()
@@ -87,18 +97,21 @@ struct ClipboardHistoryStoreTests {
             return
         }
 
+        defer {
+            // Limpieza garantizada, incluso si falla el test
+            if let pinned = store.items.first(where: { $0.isPinned }) {
+                store.togglePin(pinned)
+            }
+        }
+
         store.togglePin(item)
 
         #expect(store.pinError == nil)
         #expect(store.items.first?.isPinned == true)
-
-        // Limpieza
-        if let pinned = store.items.first {
-            store.togglePin(pinned)
-        }
     }
 
-    @Test func pinnedItemsSurviveThe25ItemCap() {
+    @Test("Items pineados sobreviven al límite de 25 items")
+    func pinnedItemsSurviveThe25ItemCap() {
         let store = ClipboardHistoryStore()
         store.add(.text("no me toques que estoy pineado"))
 
@@ -106,6 +119,14 @@ struct ClipboardHistoryStoreTests {
             Issue.record("Se esperaba encontrar el item recién añadido")
             return
         }
+        
+        defer {
+            // Limpieza garantizada
+            if let pinned = store.items.first(where: { $0.content == .text("no me toques que estoy pineado") }) {
+                store.togglePin(pinned)
+            }
+        }
+        
         store.togglePin(toPin)
         #expect(store.pinError == nil)
 
@@ -116,14 +137,10 @@ struct ClipboardHistoryStoreTests {
         #expect(store.items.contains {
             $0.content == .text("no me toques que estoy pineado") && $0.isPinned
         })
-
-        // Limpieza
-        if let pinned = store.items.first(where: { $0.content == .text("no me toques que estoy pineado") }) {
-            store.togglePin(pinned)
-        }
     }
 
-    @Test func clearHistoryKeepsPinnedItemsButRemovesTheRest() {
+    @Test("Limpiar historial mantiene items pineados pero elimina el resto")
+    func clearHistoryKeepsPinnedItemsButRemovesTheRest() {
         let store = ClipboardHistoryStore()
         store.add(.text("se queda porque está pineado"))
 
@@ -131,6 +148,14 @@ struct ClipboardHistoryStoreTests {
             Issue.record("Se esperaba encontrar el item recién añadido")
             return
         }
+        
+        defer {
+            // Limpieza garantizada
+            if let pinned = store.items.first(where: { $0.content == .text("se queda porque está pineado") }) {
+                store.togglePin(pinned)
+            }
+        }
+        
         store.togglePin(toPin)
         #expect(store.pinError == nil)
 
@@ -141,10 +166,42 @@ struct ClipboardHistoryStoreTests {
         #expect(!store.items.contains { $0.content == .text("se borra al vaciar") })
         // Tras vaciar, no debería quedar NINGÚN item sin pinear
         #expect(store.items.allSatisfy { $0.isPinned })
-
-        // Limpieza
-        if let pinned = store.items.first(where: { $0.content == .text("se queda porque está pineado") }) {
+    }
+    
+    // MARK: - Tests adicionales para casos edge
+    
+    @Test("Texto vacío se puede añadir al historial")
+    func emptyTextCanBeAdded() {
+        let store = ClipboardHistoryStore()
+        store.add(.text(""))
+        #expect(store.items.first?.content == .text(""))
+    }
+    
+    @Test("Toggle pin dos veces vuelve al estado original")
+    func togglePinTwiceReturnsToOriginalState() {
+        let store = ClipboardHistoryStore()
+        store.add(.text("toggle-test"))
+        
+        guard let item = store.items.first else {
+            Issue.record("Se esperaba encontrar el item recién añadido")
+            return
+        }
+        
+        defer {
+            // Asegurar limpieza
+            if let maybePin = store.items.first(where: { $0.content == .text("toggle-test") && $0.isPinned }) {
+                store.togglePin(maybePin)
+            }
+        }
+        
+        // Primera vez: pinear
+        store.togglePin(item)
+        #expect(store.items.first?.isPinned == true)
+        
+        // Segunda vez: despinear
+        if let pinned = store.items.first {
             store.togglePin(pinned)
         }
+        #expect(store.items.first?.isPinned == false)
     }
 }
