@@ -2,8 +2,6 @@
 
 A free, native macOS clipboard history manager — the Cmd+Option+V equivalent of Windows' Win+V.
 
-*(The GitHub repo keeps its original name, `CopyPasteMemory` — only the app itself is now called Clipboard+.)*
-
 🇬🇧 [English](#english) · 🇪🇸 [Español](#español)
 
 ---
@@ -36,7 +34,7 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/AdrianCardin/CopyPasteMemory.git
+   git clone https://github.com/AdrianCardin/ClipboardPlus.git
    ```
 2. Open `ClipboardPlus.xcodeproj` in Xcode.
 3. Select your own signing team: click the **ClipboardPlus** target → **Signing & Capabilities** → set **Team** to your own Apple ID (the repo ships with the original author's team, which won't work on your machine).
@@ -48,7 +46,7 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
 There's no auto-update yet — since you built it from source, updating means pulling the latest code and rebuilding:
 
 ```bash
-cd CopyPasteMemory
+cd ClipboardPlus
 git pull
 ```
 
@@ -105,7 +103,7 @@ Then reopen the project in Xcode (or let it reload automatically if it was alrea
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/AdrianCardin/CopyPasteMemory.git
+   git clone https://github.com/AdrianCardin/ClipboardPlus.git
    ```
 2. Abre `ClipboardPlus.xcodeproj` en Xcode.
 3. Elige tu propio equipo de firma: en el target **ClipboardPlus** → **Signing & Capabilities** → cambia **Team** a tu propio Apple ID (el repositorio trae configurado el equipo del autor original, que no te va a funcionar a ti).
@@ -117,7 +115,7 @@ Then reopen the project in Xcode (or let it reload automatically if it was alrea
 Todavía no hay actualización automática — como lo compilaste desde el código fuente, actualizar significa traer los cambios nuevos y volver a compilar:
 
 ```bash
-cd CopyPasteMemory
+cd ClipboardPlus
 git pull
 ```
 
