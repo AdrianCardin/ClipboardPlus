@@ -21,7 +21,7 @@ struct CopyPasteMemoryApp: App {
     // ventana grande — toda la app "vive" en la barra de menú y en el panel
     // flotante que abre HistoryPanelController.
     var body: some Scene {
-        MenuBarExtra("CopyPasteMemory", systemImage: "doc.on.clipboard") {
+        MenuBarExtra("Clipboard+", systemImage: "doc.on.clipboard") {
             // Le pasamos el historial (creado dentro de appDelegate) para que
             // el menú pueda mostrar cuántos items hay y vaciarlo si se pide,
             // y la propia función showHistoryPanel (sin paréntesis: así se

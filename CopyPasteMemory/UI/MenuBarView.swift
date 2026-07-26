@@ -55,7 +55,7 @@ struct MenuBarView: View {
 
         Divider()
 
-        Button("Salir de CopyPasteMemory") {
+        Button("Salir de Clipboard+") {
             NSApp.terminate(nil) // cierra la app por completo
         }
     }

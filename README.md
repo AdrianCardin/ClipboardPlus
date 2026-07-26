@@ -1,6 +1,8 @@
-# CopyPasteMemory
+# Clipboard+
 
 A free, native macOS clipboard history manager — the Cmd+Option+V equivalent of Windows' Win+V.
+
+*(The GitHub repo and Xcode project keep their original internal name, `CopyPasteMemory` — only the app's public name changed to Clipboard+.)*
 
 🇬🇧 [English](#english) · 🇪🇸 [Español](#español)
 
@@ -8,7 +10,7 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
 
 ## English
 
-**CopyPasteMemory** is a lightweight menu bar app for macOS that keeps a history of your last 25 copied items (text and images) and lets you bring any of them back with a global shortcut — no paid subscription, unlike most clipboard managers on the Mac App Store.
+**Clipboard+** is a lightweight menu bar app for macOS that keeps a history of your last 25 copied items (text and images) and lets you bring any of them back with a global shortcut — no paid subscription, unlike most clipboard managers on the Mac App Store.
 
 ### Features
 
@@ -56,7 +58,7 @@ Then reopen the project in Xcode (or let it reload automatically if it was alrea
 
 | Action | Result |
 |---|---|
-| ⌘C (anywhere, as always) | Copies normally — CopyPasteMemory just watches silently in the background |
+| ⌘C (anywhere, as always) | Copies normally — Clipboard+ just watches silently in the background |
 | ⌘⌥V | Opens the history panel |
 | Click a row / Enter | Restores that item to the clipboard, closes the panel — press ⌘V to paste it |
 | 📌 icon on a row | Pins/unpins that item so it survives a restart |
@@ -77,7 +79,7 @@ Then reopen the project in Xcode (or let it reload automatically if it was alrea
 
 ## Español
 
-**CopyPasteMemory** es una app ligera de barra de menú para macOS que guarda un historial de tus últimos 25 elementos copiados (texto e imágenes) y te deja recuperar cualquiera de ellos con un atajo global — sin suscripción de pago, a diferencia de la mayoría de gestores de portapapeles de la Mac App Store.
+**Clipboard+** es una app ligera de barra de menú para macOS que guarda un historial de tus últimos 25 elementos copiados (texto e imágenes) y te deja recuperar cualquiera de ellos con un atajo global — sin suscripción de pago, a diferencia de la mayoría de gestores de portapapeles de la Mac App Store.
 
 ### Funcionalidades
 
@@ -125,7 +127,7 @@ Luego vuelve a abrir el proyecto en Xcode (o deja que se recargue solo si ya lo 
 
 | Acción | Resultado |
 |---|---|
-| ⌘C (en cualquier sitio, como siempre) | Copia con normalidad — CopyPasteMemory solo observa en segundo plano |
+| ⌘C (en cualquier sitio, como siempre) | Copia con normalidad — Clipboard+ solo observa en segundo plano |
 | ⌘⌥V | Abre el panel del historial |
 | Clic en una fila / Enter | Restaura ese elemento al portapapeles y cierra el panel — pulsa ⌘V para pegarlo |
 | Icono 📌 de una fila | Pinea/despinea ese elemento para que sobreviva a un reinicio |

@@ -140,7 +140,7 @@
         }
       }
     },
-    "CopyPasteMemory" : {
+    "Clipboard+" : {
 
     },
     "Este elemento es demasiado grande para guardarlo de forma permanente (máx. 100 KB de texto o 5 MB de imagen)." : {
@@ -415,36 +415,36 @@
         }
       }
     },
-    "Salir de CopyPasteMemory" : {
+    "Salir de Clipboard+" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CopyPasteMemory beenden"
+            "value" : "Clipboard+ beenden"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quit CopyPasteMemory"
+            "value" : "Quit Clipboard+"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salir de CopyPasteMemory"
+            "value" : "Salir de Clipboard+"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quitter CopyPasteMemory"
+            "value" : "Quitter Clipboard+"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esci da CopyPasteMemory"
+            "value" : "Esci da Clipboard+"
           }
         }
       }
