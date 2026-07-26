@@ -23,7 +23,7 @@ jobs:
       - name: Ejecutar tests
         run: |
           xcodebuild test \
-            -project CopyPasteMemory.xcodeproj \
+            -project ClipboardPlus.xcodeproj \
             -scheme ClipboardPlus \
             -destination 'platform=macOS' \
             CODE_SIGNING_ALLOWED=NO \

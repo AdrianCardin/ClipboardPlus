@@ -2,7 +2,7 @@
 
 A free, native macOS clipboard history manager — the Cmd+Option+V equivalent of Windows' Win+V.
 
-*(The GitHub repo and Xcode project keep their original internal name, `CopyPasteMemory` — only the app's public name changed to Clipboard+.)*
+*(The GitHub repo keeps its original name, `CopyPasteMemory` — only the app itself is now called Clipboard+.)*
 
 🇬🇧 [English](#english) · 🇪🇸 [Español](#español)
 
@@ -38,8 +38,8 @@ A free, native macOS clipboard history manager — the Cmd+Option+V equivalent o
    ```bash
    git clone https://github.com/AdrianCardin/CopyPasteMemory.git
    ```
-2. Open `CopyPasteMemory.xcodeproj` in Xcode.
-3. Select your own signing team: click the **CopyPasteMemory** target → **Signing & Capabilities** → set **Team** to your own Apple ID (the repo ships with the original author's team, which won't work on your machine).
+2. Open `ClipboardPlus.xcodeproj` in Xcode.
+3. Select your own signing team: click the **ClipboardPlus** target → **Signing & Capabilities** → set **Team** to your own Apple ID (the repo ships with the original author's team, which won't work on your machine).
 4. Press **⌘R** to build and run.
 5. The first time you copy something or pin a text item, macOS may ask for Keychain access — click **Allow Always**.
 
@@ -107,8 +107,8 @@ Then reopen the project in Xcode (or let it reload automatically if it was alrea
    ```bash
    git clone https://github.com/AdrianCardin/CopyPasteMemory.git
    ```
-2. Abre `CopyPasteMemory.xcodeproj` en Xcode.
-3. Elige tu propio equipo de firma: en el target **CopyPasteMemory** → **Signing & Capabilities** → cambia **Team** a tu propio Apple ID (el repositorio trae configurado el equipo del autor original, que no te va a funcionar a ti).
+2. Abre `ClipboardPlus.xcodeproj` en Xcode.
+3. Elige tu propio equipo de firma: en el target **ClipboardPlus** → **Signing & Capabilities** → cambia **Team** a tu propio Apple ID (el repositorio trae configurado el equipo del autor original, que no te va a funcionar a ti).
 4. Pulsa **⌘R** para compilar y ejecutar.
 5. La primera vez que copies algo o pinees un texto, macOS puede pedirte acceso al Llavero — dale a **Permitir siempre**.
 

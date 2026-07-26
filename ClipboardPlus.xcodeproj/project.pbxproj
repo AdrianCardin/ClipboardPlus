@@ -12,24 +12,24 @@
 			containerPortal = 2D99ABC93012A1A2000A55BF /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D99ABD03012A1A2000A55BF;
-			remoteInfo = CopyPasteMemory;
+			remoteInfo = ClipboardPlus;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2D99ABD13012A1A2000A55BF /* ClipboardPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClipboardPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D99AC413012CE8D000A55BF /* CopyPasteMemoryUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPasteMemoryUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D99AC413012CE8D000A55BF /* ClipboardPlusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClipboardPlusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		2D99ABD33012A1A2000A55BF /* CopyPasteMemory */ = {
+		2D99ABD33012A1A2000A55BF /* ClipboardPlus */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = CopyPasteMemory;
+			path = ClipboardPlus;
 			sourceTree = "<group>";
 		};
-		2D99AC423012CE8D000A55BF /* CopyPasteMemoryUnitTests */ = {
+		2D99AC423012CE8D000A55BF /* ClipboardPlusTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = CopyPasteMemoryUnitTests;
+			path = ClipboardPlusTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -55,8 +55,8 @@
 		2D99ABC83012A1A2000A55BF = {
 			isa = PBXGroup;
 			children = (
-				2D99ABD33012A1A2000A55BF /* CopyPasteMemory */,
-				2D99AC423012CE8D000A55BF /* CopyPasteMemoryUnitTests */,
+				2D99ABD33012A1A2000A55BF /* ClipboardPlus */,
+				2D99AC423012CE8D000A55BF /* ClipboardPlusTests */,
 				2D99ABD23012A1A2000A55BF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,7 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				2D99ABD13012A1A2000A55BF /* ClipboardPlus.app */,
-				2D99AC413012CE8D000A55BF /* CopyPasteMemoryUnitTests.xctest */,
+				2D99AC413012CE8D000A55BF /* ClipboardPlusTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,18 +86,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				2D99ABD33012A1A2000A55BF /* CopyPasteMemory */,
+				2D99ABD33012A1A2000A55BF /* ClipboardPlus */,
 			);
 			name = ClipboardPlus;
 			packageProductDependencies = (
 			);
-			productName = CopyPasteMemory;
+			productName = ClipboardPlus;
 			productReference = 2D99ABD13012A1A2000A55BF /* ClipboardPlus.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D99AC403012CE8D000A55BF /* CopyPasteMemoryUnitTests */ = {
+		2D99AC403012CE8D000A55BF /* ClipboardPlusTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D99AC473012CE8D000A55BF /* Build configuration list for PBXNativeTarget "CopyPasteMemoryUnitTests" */;
+			buildConfigurationList = 2D99AC473012CE8D000A55BF /* Build configuration list for PBXNativeTarget "ClipboardPlusTests" */;
 			buildPhases = (
 				2D99AC3D3012CE8D000A55BF /* Sources */,
 				2D99AC3E3012CE8D000A55BF /* Frameworks */,
@@ -109,13 +109,13 @@
 				2D99AC463012CE8D000A55BF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				2D99AC423012CE8D000A55BF /* CopyPasteMemoryUnitTests */,
+				2D99AC423012CE8D000A55BF /* ClipboardPlusTests */,
 			);
-			name = CopyPasteMemoryUnitTests;
+			name = ClipboardPlusTests;
 			packageProductDependencies = (
 			);
-			productName = CopyPasteMemoryUnitTests;
-			productReference = 2D99AC413012CE8D000A55BF /* CopyPasteMemoryUnitTests.xctest */;
+			productName = ClipboardPlusTests;
+			productReference = 2D99AC413012CE8D000A55BF /* ClipboardPlusTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -137,7 +137,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2D99ABCC3012A1A2000A55BF /* Build configuration list for PBXProject "CopyPasteMemory" */;
+			buildConfigurationList = 2D99ABCC3012A1A2000A55BF /* Build configuration list for PBXProject "ClipboardPlus" */;
 			developmentRegion = es;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -156,7 +156,7 @@
 			projectRoot = "";
 			targets = (
 				2D99ABD03012A1A2000A55BF /* ClipboardPlus */,
-				2D99AC403012CE8D000A55BF /* CopyPasteMemoryUnitTests */,
+				2D99AC403012CE8D000A55BF /* ClipboardPlusTests */,
 			);
 		};
 /* End PBXProject section */
@@ -401,14 +401,14 @@
 				DEVELOPMENT_TEAM = TWUZXY756F;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ACL.CopyPasteMemoryUnitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ACL.ClipboardPlusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CopyPasteMemory.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CopyPasteMemory";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClipboardPlus.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClipboardPlus";
 			};
 			name = Debug;
 		};
@@ -421,21 +421,21 @@
 				DEVELOPMENT_TEAM = TWUZXY756F;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ACL.CopyPasteMemoryUnitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ACL.ClipboardPlusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CopyPasteMemory.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CopyPasteMemory";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClipboardPlus.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClipboardPlus";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2D99ABCC3012A1A2000A55BF /* Build configuration list for PBXProject "CopyPasteMemory" */ = {
+		2D99ABCC3012A1A2000A55BF /* Build configuration list for PBXProject "ClipboardPlus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D99ABDC3012A1A2000A55BF /* Debug */,
@@ -453,7 +453,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D99AC473012CE8D000A55BF /* Build configuration list for PBXNativeTarget "CopyPasteMemoryUnitTests" */ = {
+		2D99AC473012CE8D000A55BF /* Build configuration list for PBXNativeTarget "ClipboardPlusTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D99AC483012CE8D000A55BF /* Debug */,

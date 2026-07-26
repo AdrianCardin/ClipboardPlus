@@ -5,7 +5,7 @@
 
 import Testing
 import Foundation
-@testable import CopyPasteMemory
+@testable import ClipboardPlus
 
 // @testable import nos deja ver también los tipos "internos" (sin `public`)
 // de la app, como si estos tests formaran parte del propio módulo.

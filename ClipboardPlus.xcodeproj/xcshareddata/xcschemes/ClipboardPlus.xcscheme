@@ -18,7 +18,7 @@
                BlueprintIdentifier = "2D99ABD03012A1A2000A55BF"
                BuildableName = "ClipboardPlus.app"
                BlueprintName = "ClipboardPlus"
-               ReferencedContainer = "container:CopyPasteMemory.xcodeproj">
+               ReferencedContainer = "container:ClipboardPlus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,21 +35,10 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2D99AC313012CD5C000A55BF"
-               BuildableName = "CopyPasteMemoryTests"
-               BlueprintName = "CopyPasteMemoryTests"
-               ReferencedContainer = "container:CopyPasteMemory.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D99AC403012CE8D000A55BF"
-               BuildableName = "CopyPasteMemoryUnitTests.xctest"
-               BlueprintName = "CopyPasteMemoryUnitTests"
-               ReferencedContainer = "container:CopyPasteMemory.xcodeproj">
+               BuildableName = "ClipboardPlusTests.xctest"
+               BlueprintName = "ClipboardPlusTests"
+               ReferencedContainer = "container:ClipboardPlus.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -72,7 +61,7 @@
             BlueprintIdentifier = "2D99ABD03012A1A2000A55BF"
             BuildableName = "ClipboardPlus.app"
             BlueprintName = "ClipboardPlus"
-            ReferencedContainer = "container:CopyPasteMemory.xcodeproj">
+            ReferencedContainer = "container:ClipboardPlus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <LocationScenarioReference
@@ -93,7 +82,7 @@
             BlueprintIdentifier = "2D99ABD03012A1A2000A55BF"
             BuildableName = "ClipboardPlus.app"
             BlueprintName = "ClipboardPlus"
-            ReferencedContainer = "container:CopyPasteMemory.xcodeproj">
+            ReferencedContainer = "container:ClipboardPlus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

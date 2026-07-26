@@ -4,7 +4,7 @@
 //
 
 import Testing
-@testable import CopyPasteMemory
+@testable import ClipboardPlus
 
 // Nota importante sobre estos tests: ClipboardHistoryStore usa el Llavero y
 // el sistema de archivos REALES de este Mac a través de PinnedItemStore (no
