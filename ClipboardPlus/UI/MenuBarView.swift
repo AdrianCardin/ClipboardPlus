@@ -14,6 +14,7 @@ struct MenuBarView: View {
     // sí necesita saber si hay items o no (para activar/desactivar "Vaciar")
     @ObservedObject var store: ClipboardHistoryStore
     @ObservedObject var launchAtLoginManager: LaunchAtLoginManager
+    @ObservedObject var autoPasteManager: AutoPasteManager
 
     // En vez de buscar el AppDelegate nosotros mismos (con NSApp.delegate as?
     // AppDelegate, que fallaba en silencio al pulsar desde este menú), quien
@@ -50,6 +51,15 @@ struct MenuBarView: View {
             isOn: Binding(
                 get: { launchAtLoginManager.isEnabled },
                 set: { launchAtLoginManager.setEnabled($0) }
+            )
+        )
+
+        // Mismo patrón de Binding a mano que el Toggle de arriba
+        Toggle(
+            "Pegar automáticamente",
+            isOn: Binding(
+                get: { autoPasteManager.isEnabled },
+                set: { autoPasteManager.setEnabled($0) }
             )
         )
 

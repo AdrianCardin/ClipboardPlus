@@ -18,6 +18,11 @@ struct HistoryPanelView: View {
     // (al seleccionar un item, o al pulsar Escape)
     var onDismiss: () -> Void
 
+    // Closure que llamamos justo después de copiar el item elegido. El
+    // controller se encarga de cerrar el panel y, si "Pegar automáticamente"
+    // está activo, de pegarlo en la app donde estabas.
+    var onItemRestored: () -> Void
+
     // @State: variable propia de esta vista, para recordar qué fila está
     // resaltada mientras navegas con las flechas del teclado
     @State private var selectedID: ClipboardItem.ID?
@@ -92,6 +97,22 @@ struct HistoryPanelView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            // Papelera: igual que "Vaciar historial" del menú, borra todo
+            // lo NO pineado (clearHistory() respeta los pines)
+            Button {
+                store.clearHistory()
+                // La fila seleccionada puede haber desaparecido: volvemos a
+                // seleccionar la primera que quede (o nil si no queda nada)
+                selectedID = store.items.first?.id
+            } label: {
+                Image(systemName: "trash")
+            }
+            .buttonStyle(.borderless)
+            // Tooltip al pasar el ratón; reutiliza el texto del menú, que
+            // ya está traducido en Localizable.xcstrings
+            .help("Vaciar historial")
+            // Deshabilitado si no hay nada sin pinear que borrar
+            .disabled(unpinnedCount == 0)
         }
         .padding(12)
     }
@@ -153,9 +174,9 @@ struct HistoryPanelView: View {
     }
 
     // Acción común a "clic en una fila" y "Enter": restaurar ese item al
-    // portapapeles y cerrar el panel
+    // portapapeles (el controller cierra el panel y, si toca, lo pega)
     private func select(_ item: ClipboardItem) {
         store.selectAndRestore(item)
-        onDismiss()
+        onItemRestored()
     }
 }

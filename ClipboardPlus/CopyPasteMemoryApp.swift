@@ -29,6 +29,7 @@ struct CopyPasteMemoryApp: App {
             MenuBarView(
                 store: appDelegate.historyStore,
                 launchAtLoginManager: appDelegate.launchAtLoginManager,
+                autoPasteManager: appDelegate.autoPasteManager,
                 onShowHistory: appDelegate.showHistoryPanel
             )
         }

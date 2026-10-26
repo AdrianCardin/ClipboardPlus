@@ -13,14 +13,20 @@ import SwiftUI
 // se consigue con configuración específica de AppKit (ver panelInstance()).
 final class HistoryPanelController: NSObject, NSWindowDelegate {
     private let store: ClipboardHistoryStore
+    private let autoPasteManager: AutoPasteManager
 
     // Empieza en nil: el panel no se crea hasta la primera vez que hace falta
     // (así arrancamos la app más rápido y no gastamos memoria si nunca se abre).
     private var panel: NSPanel?
     private var resignObserver: NSObjectProtocol?
 
-    init(store: ClipboardHistoryStore) {
+    // La app que estaba delante justo antes de abrir el panel: ahí es donde
+    // pegamos si "Pegar automáticamente" está activado.
+    private var previousApp: NSRunningApplication?
+
+    init(store: ClipboardHistoryStore, autoPasteManager: AutoPasteManager) {
         self.store = store
+        self.autoPasteManager = autoPasteManager
     }
 
     // La llama HotKeyManager cada vez que se pulsa Cmd+Option+V:
@@ -29,11 +35,24 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
         if let panel, panel.isVisible {
             hide()
         } else {
-            show()
+            // Desde el atajo NO nos activamos: la app donde estabas sigue
+            // siendo la activa (y conserva su foco, p. ej. la barra de
+            // direcciones del navegador), así el Cmd+V le llega directamente.
+            show(activating: false)
         }
     }
 
-    func show() {
+    // `activating`: true solo cuando se abre desde el menú de la barra (ver
+    // AppDelegate.showHistoryPanel), por la pelea de foco explicada abajo.
+    func show(activating: Bool = true) {
+        // Apuntamos qué app estaba delante ANTES de activarnos nosotros
+        // (si por lo que sea la de delante ya somos nosotros, mantenemos la
+        // que teníamos apuntada de la vez anterior)
+        if let frontmost = NSWorkspace.shared.frontmostApplication,
+           frontmost != NSRunningApplication.current {
+            previousApp = frontmost
+        }
+
         // Reafirmamos que nuestra app es "la activa" justo antes de mostrar
         // el panel. Esto es clave cuando se abre desde el menú de la barra
         // de estado: al cerrarse ese menú, macOS le devuelve la actividad a
@@ -41,8 +60,12 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
         // arrastrar consigo al panel recién abierto (le quita el foco justo
         // después de dárselo, y como el panel se autooculta al perder el
         // foco, parece que "no ha pasado nada"). Activarnos aquí evita esa
-        // pelea por el foco, tanto si se abre por clic como por atajo.
-        NSApp.activate()
+        // pelea por el foco. Desde el atajo no hace falta: el panel es
+        // .nonactivatingPanel y KeyablePanel ya le deja recibir el teclado
+        // sin quitarle el foco a la app de debajo.
+        if activating {
+            NSApp.activate()
+        }
 
         let panel = panelInstance()
         positionNearCursor(panel)
@@ -56,6 +79,22 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
         panel?.orderOut(nil) // "sácalo de la pantalla" (no lo destruye, lo reutilizamos)
     }
 
+    // Si el panel se abrió desde el menú, nos hicimos "la app activa" (ver show()). Tras elegir
+    // un item, le devolvemos el foco a la app donde estabas, para que el
+    // Cmd+V (automático o a mano) le llegue a ella y no a nosotros.
+    //
+    // Desde macOS 14 la activación es "cooperativa": una app ya no puede
+    // ponerse delante cuando quiera, sino que la app activa (nosotros) tiene
+    // que CEDERLE el turno (yieldActivation) y luego pedir activarla
+    // "de parte nuestra" (activate(from:)). Sin esto, macOS puede ignorar
+    // la petición y quedarse sin ninguna app con el foco.
+    private func returnFocusToPreviousApp() {
+        // Si se abrió con el atajo no llegamos a activarnos: no hay nada que devolver
+        guard NSApp.isActive, let previousApp else { return }
+        NSApp.yieldActivation(to: previousApp)
+        previousApp.activate(from: .current, options: [])
+    }
+
     // Crea el panel la primera vez que se necesita; las siguientes veces
     // devuelve el mismo que ya existía.
     private func panelInstance() -> NSPanel {
@@ -64,9 +103,20 @@ final class HistoryPanelController: NSObject, NSWindowDelegate {
         // NSHostingView es el "puente" que permite meter una vista de SwiftUI
         // (HistoryPanelView) dentro de una ventana de AppKit (NSPanel).
         let hostingView = NSHostingView(
-            rootView: HistoryPanelView(store: store, onDismiss: { [weak self] in
-                self?.hide()
-            })
+            rootView: HistoryPanelView(
+                store: store,
+                onDismiss: { [weak self] in
+                    self?.hide()
+                },
+                // Tras copiar el item elegido: cerramos el panel y, si la
+                // opción está activa, lo pegamos en la app anterior
+                onItemRestored: { [weak self] in
+                    guard let self else { return }
+                    self.hide()
+                    self.returnFocusToPreviousApp()
+                    self.autoPasteManager.pasteIfEnabled(into: self.previousApp)
+                }
+            )
         )
 
         // KeyablePanel es nuestra propia subclase (definida abajo del todo)

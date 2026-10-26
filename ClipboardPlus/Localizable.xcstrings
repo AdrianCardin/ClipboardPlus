@@ -347,6 +347,41 @@
         }
       }
     },
+    "Pegar automáticamente" : {
+      "comment" : "Toggle del menú: al elegir un item, además de copiarlo, pegarlo directamente (requiere permiso de Accesibilidad)",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch einfügen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste Automatically"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pegar automáticamente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coller automatiquement"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incolla automaticamente"
+          }
+        }
+      }
+    },
     "Pinear (sobrevive a un reinicio del Mac)" : {
       "localizations" : {
         "de" : {

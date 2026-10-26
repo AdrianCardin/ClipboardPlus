@@ -16,6 +16,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // ya puede pasárselo a MenuBarView sin esperar a nada.
     let historyStore = ClipboardHistoryStore()
     let launchAtLoginManager = LaunchAtLoginManager()
+    let autoPasteManager = AutoPasteManager()
 
     private let monitor = ClipboardMonitor()
     private let hotKeyManager = HotKeyManager()
@@ -29,7 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // que hace lo mismo mucho antes, antes de que este código se ejecute).
         NSApp.setActivationPolicy(.accessory)
 
-        panelController = HistoryPanelController(store: historyStore)
+        panelController = HistoryPanelController(store: historyStore, autoPasteManager: autoPasteManager)
 
         // Cuando el monitor detecta algo nuevo copiado, lo guardamos en el store
         monitor.onNewContent = { [weak self] content in
